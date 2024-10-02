@@ -68,7 +68,7 @@ const reminderData: ReminderItemProps[] = [
     },
 ];
 
-function Index() {
+const Index = () => {
     return (
         <div className="flex flex-row w-full">
             <Sidebar />
@@ -111,40 +111,11 @@ function Index() {
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <Footer />
-                {/* <div className="">
-                    </div> */}
-                        {/* <Badge variant="danger" className= "tracking-wide uppercase">Connected</Badge> */}
-
-                        {/* <Smartphone strokeWidth={2} color='white' /> */}
-                        {/* <img className='rounded-full' sizes='40' src="https://github.com/shadcn.png" alt="" /> */}
-                        {/* <EntityRow logo={<Smartphone strokeWidth={2} color='white' />} name="Ikhsan's Device" statusName="connected" statusType="success" /> */}
-                    </div>
-                    {/* <ReminderItem
-                        description="Send Invoices to Jimmy, and Ask him about yesterday"
-                        dueDate={dueDate}
-                    />
-                    <ProgressItem
-                        sentAt="2024-10-01T12:00:00Z"
-                        sentTo="Thomas"
-                        message="Hi, how are you today Thomas. Did you feel good today?"
-                        isNewest
-                    />
-                    <ProgressItem
-                        sentAt="2024-10-01T12:00:00Z"
-                        sentTo="Thomas"
-                        message="Hi, how are you today Thomas. Did you feel good today?"
-                        isNewest={false}
-                    />
-                    <AlertCard/> */}
-            {/* </div> */}
+            </div>
         </div>
-
-
-
-    );
+    )
 }
 
 export default Index;
