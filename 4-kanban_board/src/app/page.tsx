@@ -3,6 +3,7 @@ import { SectionTitle } from "@/components/section-title";
 import { TaskCard } from "@/components/task-card";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { useState } from "react";
 
 interface Task {
     id: number;
@@ -12,17 +13,19 @@ interface Task {
     date: string;
 }
 
-const sections = [
+interface Section {
+    sectionTitle: string;
+    status: string;
+}
+
+const initialSections: Section[] = [
     { sectionTitle: 'Backlog', status: 'backlog' },
     { sectionTitle: 'To Do', status: 'todo' },
     { sectionTitle: 'In Progress', status: 'in_progress' },
     { sectionTitle: 'Done', status: 'done' },
-    { sectionTitle: 'staging', status: 'staging' },
-    { sectionTitle: 'prod', status: 'prod' },
-    { sectionTitle: 'prod', status: 'prod' },
   ];
 
-  const tasks: Task[] = [
+  const initialTasks: Task[] = [
     {
       id: 1,
       title: 'Design Landing Page',
@@ -82,6 +85,30 @@ const sections = [
 ];
 
 const Index = () => {
+    const [sections, setSections] = useState(initialSections);
+    const [tasks, setTasks] = useState(initialTasks);
+
+    // Function to add a new task to a specific section
+    const addTask = (status: string) => {
+        const newTask: Task = {
+            id: tasks.length + 1,
+            title: 'Card Name',
+            description: 'Add your description',
+            status: status, // Set the status based on the section
+            date: new Date().toISOString()
+        };
+        setTasks([...tasks, newTask]); // Add the new task to the existing tasks
+    };
+
+    // Function to add a new section
+    const addSection = () => {
+        const newSection: Section = {
+            sectionTitle: `New Section ${sections.length + 1}`,
+            status: `new_section_${sections.length + 1}`
+        };
+        setSections([...sections, newSection]); // Add the new section to the existing sections
+    };
+
     return (
         <div className="flex min-h-screen w-full">
             <div className="w-full flex flex-col">
@@ -104,16 +131,20 @@ const Index = () => {
                                             />
                                         ))}
                                     </div>
-                                    <Button variant="outline" className="w-48 flex flex-row items-center justify-center text-center bg-neutral-200 gap-1 mt-auto hover:bg-neutral-200 hover:opacity-80">
+                                    <Button
+                                        variant="outline"
+                                        className="w-48 flex flex-row items-center justify-center text-center bg-neutral-200 gap-1 mt-auto hover:bg-neutral-200 hover:opacity-80"
+                                        onClick={() => addTask(section.status)}
+                                    >
                                         <Plus size={16} className="text-gray-500 font-bold" />
                                         <div className="text-[10px] text-gray-500 font-bold">Create New Card</div>
                                     </Button>
                                 </div>
                             )
                         })}
-                        <Button variant="outline" className="w-48 flex flex-row items-center justify-center top-0 text-center shadow bg-neutral-200 gap-1 p-3 hover:bg-neutral-200 hover:opacity-80">
+                        <Button variant="outline" onClick={addSection} className="w-48 flex flex-row items-center justify-center top-0 text-center shadow bg-neutral-200 gap-1 p-3 hover:bg-neutral-200 hover:opacity-80">
                             <Plus size={16} className="text-gray-500 font-bold" />
-                            <div className="text-[10px] text-gray-500 font-bold">Create New Card</div>
+                            <div className="text-[10px] text-gray-500 font-bold">Create New Section</div>
                         </Button>
                     </div>
 
