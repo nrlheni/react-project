@@ -24,15 +24,9 @@ To run the project locally, follow these steps:
 
 To customize the data or add more, simply place or modify data files in the `/src/data` folder.
 
-### Data Structure
-The fields for each data entry are:
-- `id`: A unique identifier for the entry.
-- `name`: The person's full name.
-- `email`: The email address of the individual.
-- `gender`: The gender of the individual.
-- `address`: The person's address.
+The fields for each user data entry are: id, name, email, gender, address
 
-To easily generate custom data, you can use the [Mockaroo](https://www.mockaroo.com/) service to customize amount of data and export is as `.json` file. Place the generated data file inside the `/src/data` folder and import it into your components as needed.
+To easily generate custom data, you can use the [Mockaroo](https://www.mockaroo.com/) service to customize amount of data and export is as `.json` file.
 
 ## Features
 
