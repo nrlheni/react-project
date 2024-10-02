@@ -8,7 +8,7 @@ This project is a React TypeScript application that loads and displays around 10
 
 ## Demo
 
-You can access the live demo here: [www.example.com](www.example.com)
+You can access the live demo here: [https://simple-datatable-nurulakhni.vercel.app/](https://simple-datatable-nurulakhni.vercel.app/)
 
 ## Installation
 
