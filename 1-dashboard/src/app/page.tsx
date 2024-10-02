@@ -77,17 +77,17 @@ function Index() {
                 <div className="w-full flex flex-col">
                     <div className="relative">
                         <img src={Banner} alt="Banner" className="w-full h-auto" />
-                        <div className="absolute top-6 w-full flex flex-col gap-8 mx-auto">
+                        <div className="absolute top-6 w-full flex flex-col gap-8 justify-start">
                             <div className="flex flex-row w-1/2 justify-center items-center mx-12">
                                 <h1 className="text-[50px] font-semibold underline underline-offset-4 tracking-wide capitalize">
                                     Here’s What All You Need
                                 </h1>
                             </div>
-                            <div className="flex flex-row w-full justify-center gap-10">
+                            <div className="flex flex-wrap gap-8 ml-10 xl:gap-12 justify-start mx-auto">
                                 <SummaryCard title="Message Bandwidth" value={20} type="Messages" maxValue={100} />
                                 <SummaryCard title="Broadcast Message" value={20} type="Messages" />
                                 <SummaryCard title="Conversation" value={20} type="Conversations" />
-                                <SummaryCard title="Outbond Message" value={35} type="Percents" />
+                                <SummaryCard title="Outbound Message" value={35} type="Percents" />
                             </div>
                         </div>
                     </div>

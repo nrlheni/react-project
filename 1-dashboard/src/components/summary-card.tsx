@@ -9,7 +9,7 @@ interface SummaryCardProps {
 }
 
 export const SummaryCard: React.FC<SummaryCardProps> = ({ title, value, type, maxValue }) => (
-    <div className="flex flex-col bg-white min-w-52 max-h-40 px-4 py-2 rounded-lg shadow-lg gap-4">
+    <div className="flex flex-col bg-white min-w-52 lg:min-w-48 max-h-40 px-4 py-2 rounded-lg shadow-lg gap-4">
         <div className="flex flex-row justify-between">
             <div className='rounded-lg p-2 bg-amber-100'>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
