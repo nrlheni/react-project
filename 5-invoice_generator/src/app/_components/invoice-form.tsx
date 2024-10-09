@@ -102,7 +102,7 @@ export const InvoiceForm = () => {
     return (
         <>
             {!isInvoiceGenerated ? (
-                <div id="invoice-form" className="w-1/2 h-[90vh] rounded-lg bg-white shadow-lg">
+                <div id="invoice-form" className="sm:w-full md:w-1/2 h-[90vh] rounded-lg bg-white shadow-lg">
                     <div className="text-lg text-center font-bold tracking-wide text-gray-800 mt-4 mb-2">Invoice Form</div>
                     <div className="flex w-full max-h-[75vh] overflow-y-auto justify-start px-8 mx-auto gap-4">
                         <Form {...form}>

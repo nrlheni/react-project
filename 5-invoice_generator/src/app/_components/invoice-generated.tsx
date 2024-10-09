@@ -24,8 +24,8 @@ export const InvoiceGenerated: React.FC<InvoiceGeneratedProps> = ({ companyName,
     const total = subtotal - totalTax;
 
     return (
-        <div className="w-1/2 bg-white shadow-lg">
-            <div className="flex flex-col w-full max-h-screen justify-start mx-auto gap-4 px-8 py-6">
+        <div className="sm:w-full md:w-1/2 bg-white shadow-lg">
+            <div className="flex flex-col w-full sm:max-h-full md:max-h-screen justify-start mx-auto gap-4 px-8 py-6">
                 <div className="w-full flex flex-row items-center justify-between">
                     { logo ? (
                         <img src={logo} alt={companyName} className="size-12 bg-white" />
