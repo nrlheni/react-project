@@ -1,24 +1,25 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { formatNumber } from "@/utils/number";
 
 interface Product {
-    item: string;
-    quantity: number | string;
-    price: number | string;
+    name: string;
+    qty: number;
+    price: number;
 }
 
 interface InvoiceGeneratedProps {
     companyName: string;
     logo: string;
-    billedTo: string;
-    email: string;
-    phone: string;
+    billedToName: string;
+    billedToEmail: string;
+    billedToPhone: string;
     products: Product[];
     tax: number;
 }
 
-export const InvoiceGenerated: React.FC<InvoiceGeneratedProps> = ({ companyName, logo, billedTo, email, phone, products, tax }) => {
-    const subtotal = products.reduce((acc, product) => acc + Number(product.price) * Number(product.quantity), 0);
+export const InvoiceGenerated: React.FC<InvoiceGeneratedProps> = ({ companyName, logo, billedToName, billedToEmail, billedToPhone, products, tax }) => {
+    const subtotal = products.reduce((acc, product) => acc + Number(product.price) * Number(product.qty), 0);
     const totalTax = (subtotal * tax) / 100;
     const total = subtotal - totalTax;
 
@@ -29,17 +30,17 @@ export const InvoiceGenerated: React.FC<InvoiceGeneratedProps> = ({ companyName,
                     { logo ? (
                         <img src={logo} alt={companyName} className="size-12 bg-white" />
                         ): (
-                            <div className="w-10 text-sm text-justify text-black font-light tracking-wide">{companyName || 'Your Logo'}</div>
+                            <div className="w-10 text-sm text-justify text-black italic tracking-wide">{companyName || 'Your Logo'}</div>
                         )
                     }
-                    <div className="w-24 break-words text-sm text-black font-light tracking-wide">No.0001</div>
+                    <div className="break-words text-sm text-black font-light tracking-wide">No.0001</div>
                 </div>
                 <div className="text-black/90 font-extrabold text-[48px] tracking-wide uppercase">Invoice</div>
                 <div className="flex flex-col items-start justify-start">
                     <div className="text-xs font-bold">Billed to:</div>
-                    <div className="text-xs capitalize">{billedTo}</div>
-                    <div className="text-xs">{email}</div>
-                    <div className="text-xs">{phone}</div>
+                    <div className="text-xs capitalize">{billedToName}</div>
+                    <div className="text-xs">{billedToEmail}</div>
+                    <div className="text-xs">{billedToPhone}</div>
                 </div>
                 <div className="my-2">
                     <ScrollArea className="max-h-[160px]">
@@ -47,7 +48,7 @@ export const InvoiceGenerated: React.FC<InvoiceGeneratedProps> = ({ companyName,
                             <TableHeader className="bg-gray-100">
                                 <TableRow>
                                     <TableHead className="px-4 py-2">Item</TableHead>
-                                    <TableHead className="px-4 py-2">Quantity</TableHead>
+                                    <TableHead className="px-4 py-2">qty</TableHead>
                                     <TableHead className="px-4 py-2">Price</TableHead>
                                     <TableHead className="px-4 py-2">Amount</TableHead>
                                 </TableRow>
@@ -55,10 +56,10 @@ export const InvoiceGenerated: React.FC<InvoiceGeneratedProps> = ({ companyName,
                             <TableBody>
                                 {products.map((product, index) => (
                                     <TableRow key={index}>
-                                        <TableCell className="px-4 py-2">{product.item || '-'}</TableCell>
-                                        <TableCell className="px-4 py-2">{product.quantity}</TableCell>
-                                        <TableCell className="px-4 py-2">Rp {product.price}</TableCell>
-                                        <TableCell className="px-4 py-2">Rp {Number(product.price) * Number(product.quantity)}</TableCell>
+                                        <TableCell className="px-4 py-2">{product.name || '-'}</TableCell>
+                                        <TableCell className="px-4 py-2">{product.qty}</TableCell>
+                                        <TableCell className="px-4 py-2">{formatNumber(product.price, {isCurrency: true})}</TableCell>
+                                        <TableCell className="px-4 py-2">{formatNumber(Number(product.price) * Number(product.qty), {isCurrency: true})}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -72,9 +73,9 @@ export const InvoiceGenerated: React.FC<InvoiceGeneratedProps> = ({ companyName,
                         <p className="font-bold tracking-wide uppercase">Total</p>
                     </div>
                     <div className="flex flex-col gap-2 justify-start">
-                        <p className="tracking-wide capitalize">Rp {subtotal}</p>
-                        <p className="tracking-wide capitalize">Rp {tax/100 * subtotal}</p>
-                        <p className="tracking-wide capitalize">Rp {total}</p>
+                        <p className="tracking-wide capitalize">{formatNumber(subtotal, {isCurrency: true})}</p>
+                        <p className="tracking-wide capitalize">{formatNumber(tax/100 * subtotal, {isCurrency: true})}</p>
+                        <p className="tracking-wide capitalize">{formatNumber(total, {isCurrency: true})}</p>
                     </div>
                 </div>
             </div>
