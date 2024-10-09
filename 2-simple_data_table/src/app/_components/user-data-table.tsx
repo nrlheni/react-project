@@ -1,8 +1,7 @@
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { User } from "../_schemas/user";
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
-import { useVirtualizer } from "@tanstack/react-virtual";
+import { DataTable } from "@/components/ui/data-table";
 
 interface UserTableProps {
   data: User[];
@@ -19,68 +18,10 @@ export const UserDataTable: React.FC<UserTableProps> = ({ data }) => {
     []
   );
 
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
-
-  const { rows } = table.getRowModel();
-
-  // The virtualizer setup
-  const tableContainerRef = React.useRef<HTMLDivElement>(null);
-
-  const rowVirtualizer = useVirtualizer({
-    count: rows.length,
-    estimateSize: () => 40,
-    getScrollElement: () => tableContainerRef.current,
-    overscan: 20,
-  });
-
   return (
-    <div className="flex w-2/3 rounded-md justify-center items-center p-8 bg-white my-5 mx-auto shadow-lg" ref={tableContainerRef}>
+    <div className="w-2/3 rounded-md bg-white p-8 my-5 mx-auto shadow-lg">
         <div >
-            <Table className=" w-full">
-                <TableHeader>
-                {table.getHeaderGroups().map(headerGroup => (
-                    <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map(header => (
-                        <TableHead key={header.id}>
-                        <div
-                            className={header.column.getCanSort() ? 'cursor-pointer select-none font-bold' : ''}
-                            onClick={header.column.getToggleSortingHandler()}
-                        >
-                            {flexRender(header.column.columnDef.header, header.getContext())}
-                            {header.column.getIsSorted() ? (header.column.getIsSorted() === 'asc' ? ' ' : ' ') : null}
-                        </div>
-                        </TableHead>
-                    ))}
-                    </TableRow>
-                ))}
-                </TableHeader>
-                <TableBody>
-                    {rowVirtualizer.getVirtualItems().map((virtualRow, index) => {
-                        const row = rows[virtualRow.index];
-                        return (
-                        <TableRow
-                            key={row.id}
-                            style={{
-                                height: `${virtualRow.size}px`,
-                                transform: `translateY(${
-                                virtualRow.start - index * virtualRow.size
-                                }px)`,
-                            }}
-                        >
-                            {row.getVisibleCells().map(cell => (
-                            <TableCell key={cell.id}>
-                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                            </TableCell>
-                            ))}
-                        </TableRow>
-                        );
-                    })}
-                </TableBody>
-            </Table>
+          <DataTable columns={columns} data={data} height="500px" />
         </div>
     </div>
   );
