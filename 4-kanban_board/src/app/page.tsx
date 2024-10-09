@@ -24,15 +24,16 @@ interface Task {
 }
 
 interface Section {
-    sectionTitle: string;
+    id: number;
+    title: string;
     status: string;
 }
 
 const initialSections: Section[] = [
-    { sectionTitle: 'Backlog', status: 'backlog' },
-    { sectionTitle: 'To Do', status: 'todo' },
-    { sectionTitle: 'In Progress', status: 'in_progress' },
-    { sectionTitle: 'Done', status: 'done' },
+    { id: 1, title: 'Backlog', status: 'backlog' },
+    { id: 2, title: 'To Do', status: 'todo' },
+    { id: 3, title: 'In Progress', status: 'in_progress' },
+    { id: 4, title: 'Done', status: 'done' },
   ];
 
   const initialTasks: Task[] = [
@@ -108,7 +109,8 @@ const Index = () => {
     const addSection = () => {
         setOpenSectionDialog(false)
         const newSection: Section = {
-            sectionTitle: newSectionName ?? `New Section ${sections.length + 1}`,
+            id: sections.length + 1,
+            title: newSectionName ?? `New Section ${sections.length + 1}`,
             status: newSectionName?.toLowerCase().replace(/\s+/g, '_') ?? `new_section_${sections.length + 1}`
         };
         setSections([...sections, newSection]);
@@ -133,6 +135,37 @@ const Index = () => {
     const handleStatusChange = (value: string) => {
         setNewTaskStatus(value);
     }
+
+    const handleUpdateTask = (id: number, title: string, description: string, date: string, status: string) => {
+        setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+                task.id === id
+                    ? { ...task, title, description, date, status }
+                    : task
+            )
+        );
+    };
+
+    const handleUpdateSection = (id: number, title: string) => {
+        const newStatus = title.toLowerCase().replace(/\s+/g, '_');
+
+        setSections((prevSections) =>
+            prevSections.map((section) =>
+                section.id === id
+                    ? { ...section, title, status: newStatus }
+                    : section
+            )
+        );
+
+        setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+                task.status === sections.find(section => section.id === id)?.status
+                    ? { ...task, status: newStatus }
+                    : task
+            )
+        );
+    };
+
 
 
     return (
@@ -249,7 +282,7 @@ const Index = () => {
                                                 <SelectContent>
                                                     {sections.map((section) => (
                                                         <SelectGroup key={section.status}>
-                                                            <SelectItem value={section.status}>{section.sectionTitle}</SelectItem>
+                                                            <SelectItem value={section.status}>{section.title}</SelectItem>
                                                         </SelectGroup>
                                                     ))}
                                                 </SelectContent>
@@ -266,8 +299,8 @@ const Index = () => {
                             {sections.map((section) => {
                                 const filteredTasks = tasks.filter((task) => task.status === section.status);
                                 return (
-                                    <div key={section.sectionTitle} className="flex flex-col gap-3 mb-2">
-                                        <SectionTitle name={section.sectionTitle} amount={filteredTasks.length} />
+                                    <div key={section.id} className="flex flex-col gap-3 mb-2">
+                                        <SectionTitle key={section.id} name={section.title} amount={filteredTasks.length} onUpdate={(name) => handleUpdateSection(section.id, name)}/>
                                         <div className="flex flex-col gap-3 max-h-[68vh] overflow-y-auto pe-2">
                                             {filteredTasks.map((task) => (
                                                 <TaskCard
@@ -275,6 +308,9 @@ const Index = () => {
                                                     title={task.title}
                                                     description={task.description}
                                                     date={task.date}
+                                                    status={task.status}
+                                                    onUpdate={(title, description, date, status) => handleUpdateTask(task.id, title, description, date, status)}
+                                                    sections={sections}
                                                 />
                                             ))}
                                         </div>
