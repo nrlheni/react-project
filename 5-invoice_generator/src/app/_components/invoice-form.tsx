@@ -28,7 +28,7 @@ export const InvoiceForm = () => {
     };
 
     const addProductRow = () => {
-        setProducts([...products, { item: "", quantity: 0, price: 0 }]);
+        setProducts([...products, { item: "", quantity: "", price: "" }]);
     };
 
     const deleteProductRow = (index: number) => {
