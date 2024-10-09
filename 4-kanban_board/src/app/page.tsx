@@ -2,13 +2,17 @@ import { Navbar } from "@/components/navbar";
 import { SectionTitle } from "@/components/section-title";
 import { TaskCard } from "@/components/task-card";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 import { SelectGroup } from "@radix-ui/react-select";
-import { Plus } from "lucide-react";
+import { CalendarIcon, Plus } from "lucide-react";
+import { format } from "date-fns";
 import { useState } from "react";
 
 interface Task {
@@ -97,6 +101,7 @@ const Index = () => {
     const [newTaskName, setNewTaskName] = useState('');
     const [newTaskDescription, setNewTaskDescription] = useState('');
     const [newTaskStatus, setNewTaskStatus] = useState('');
+    const [dueDate, setDueDate] = useState<Date | undefined>()
 
     const addTask = () => {
         setOpen(false);
@@ -105,7 +110,7 @@ const Index = () => {
             title: newTaskName || `Task-${tasks.length + 1}`,
             description: newTaskDescription || `Task description for Task-${tasks.length + 1}`,
             status: newTaskStatus,
-            date: new Date().toISOString()
+            date: dueDate?.toISOString() ?? new Date().toISOString()
         };
         setTasks([...tasks, newTask]);
         setNewTaskName('');
@@ -181,19 +186,47 @@ const Index = () => {
                                             />
                                         </div>
                                         <div className="grid grid-cols-4 items-center gap-4">
-                                            <Label htmlFor="username" className="text-left">
+                                            <Label htmlFor="description" className="text-left">
                                                 Description
                                             </Label>
                                             <Textarea
-                                                id="username"
+                                                id="description"
                                                 className="col-span-3"
                                             />
                                         </div>
                                         <div className="grid grid-cols-4 items-center gap-4">
-                                            <Label htmlFor="username" className="text-left">
+                                            <Label htmlFor="due_date" className="text-left">
+                                                Due Date
+                                            </Label>
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <Button
+                                                        variant={"outline"}
+                                                        className={cn(
+                                                            "col-span-2 justify-start text-left font-normal",
+                                                            !dueDate && "text-muted-foreground"
+                                                        )}
+                                                    >
+                                                        <CalendarIcon className="mr-2 h-4 w-4" />
+                                                        {dueDate ? format(dueDate, "PP") : <span>Pick a date</span>}
+                                                    </Button>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-auto p-0">
+                                                    <Calendar
+                                                        className="bg-white rounded"
+                                                        mode="single"
+                                                        selected={dueDate}
+                                                        onSelect={setDueDate}
+                                                        initialFocus
+                                                    />
+                                                </PopoverContent>
+                                                </Popover>
+                                        </div>
+                                        <div className="grid grid-cols-4 items-center gap-4">
+                                            <Label htmlFor="status" className="text-left">
                                                 Status
                                             </Label>
-                                            <Select onValueChange={handleStatusChange}>
+                                            <Select name="status" onValueChange={handleStatusChange}>
                                                 <SelectTrigger className="w-[180px]">
                                                     <SelectValue placeholder="Select a status" />
                                                 </SelectTrigger>

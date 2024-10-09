@@ -11,11 +11,10 @@ const formatDate = (dateInput: string | number) => {
     const date = new Date(dateInput);
     const currentYear = new Date().getFullYear();
 
-    const day = date.getDate(); // Get day of the month
+    const day = date.getDate();
     const month = date.toLocaleString('default', { month: 'short' });
     const year = date.getFullYear();
 
-    // Return formatted date string
     return year === currentYear
         ? `${day} ${month}`
         : `${day} ${month} '${String(year).slice(-2)}`;
