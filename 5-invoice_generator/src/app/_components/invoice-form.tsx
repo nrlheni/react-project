@@ -47,7 +47,7 @@ export const InvoiceForm = () => {
                 message: "Price must be at least 0",
               }),
             })
-        ).min(1, "At least one product is required"),
+        ),
         tax: z.number().optional(),
     });
 
