@@ -189,7 +189,7 @@ export const InvoiceForm = () => {
                                         </div>
                                     </div>
                                     {products.map((_, index) => (
-                                        <div key={index} className="flex items-center space-x-4">
+                                        <div key={index} className="flex items-start space-x-4">
                                             <FormField
                                                 control={form.control}
                                                 name={`products.${index}.name`}
@@ -210,7 +210,7 @@ export const InvoiceForm = () => {
                                                 <FormItem>
                                                     {index === 0 && <FormLabel className="text-xs">QTY</FormLabel>}
                                                     <FormControl>
-                                                    <Input type="number" className="w-full" {...field} onChange={event => field.onChange(+event.target.value)}/>
+                                                    <Input type="number" className="w-full" {...field} min={1} onChange={event => field.onChange(+event.target.value)}/>
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
@@ -223,7 +223,7 @@ export const InvoiceForm = () => {
                                                 <FormItem>
                                                     {index === 0 && <FormLabel className="text-xs">Price</FormLabel>}
                                                     <FormControl>
-                                                    <Input type="number" className="w-full" min={1} {...field} onChange={event => field.onChange(+event.target.value)}/>
+                                                    <Input type="number" className="w-full" {...field} min={0} onChange={event => field.onChange(+event.target.value)}/>
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
@@ -233,7 +233,7 @@ export const InvoiceForm = () => {
                                                 {index > 0 ? (
                                                     <Trash size={16} className="text-gray-600 hover:opacity-80" onClick={() => deleteProductRow(index)} />
                                                     ) : (
-                                                    <Trash size={16} className="text-gray-600" style={{ visibility: 'hidden' }} /> // Hidden but space preserved
+                                                    <Trash size={16} className="text-gray-600" style={{ visibility: 'hidden' }} />
                                                 )}
                                             </div>
                                         </div>
@@ -247,7 +247,7 @@ export const InvoiceForm = () => {
                                         <FormItem>
                                             <FormLabel className="text-sm">Tax</FormLabel>
                                             <FormControl>
-                                                <Input type="number" className="w-1/4" placeholder="" {...field} onChange={event => field.onChange(+event.target.value)} icon={<Percent size={16} />}/>
+                                                <Input type="number" className="w-1/4" placeholder="" {...field} min={0} onChange={event => field.onChange(+event.target.value)} icon={<Percent size={16} />}/>
                                             </FormControl>
                                             <FormDescription>
                                             </FormDescription>
