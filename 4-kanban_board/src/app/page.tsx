@@ -97,19 +97,32 @@ const initialSections: Section[] = [
 const Index = () => {
     const [sections, setSections] = useState(initialSections);
     const [tasks, setTasks] = useState(initialTasks);
-    const [open, setOpen] = useState(false);
+    const [openSectionDialog, setOpenSectionDialog] = useState(false);
+    const [openCardDialog, setOpenCardDialog] = useState(false);
+    const [newSectionName, setNewSectionName] = useState('');
     const [newTaskName, setNewTaskName] = useState('');
     const [newTaskDescription, setNewTaskDescription] = useState('');
     const [newTaskStatus, setNewTaskStatus] = useState('');
     const [dueDate, setDueDate] = useState<Date | undefined>()
 
+    const addSection = () => {
+        setOpenSectionDialog(false)
+        const newSection: Section = {
+            sectionTitle: newSectionName ?? `New Section ${sections.length + 1}`,
+            status: newSectionName?.toLowerCase().replace(/\s+/g, '_') ?? `new_section_${sections.length + 1}`
+        };
+        setSections([...sections, newSection]);
+
+        setNewSectionName('');
+    };
+
     const addTask = () => {
-        setOpen(false);
+        setOpenCardDialog(false);
         const newTask: Task = {
             id: tasks.length + 1,
             title: newTaskName || `Task-${tasks.length + 1}`,
             description: newTaskDescription || `Task description for Task-${tasks.length + 1}`,
-            status: newTaskStatus,
+            status: newTaskStatus ?? sections[0].status,
             date: dueDate?.toISOString() ?? new Date().toISOString()
         };
         setTasks([...tasks, newTask]);
@@ -121,57 +134,24 @@ const Index = () => {
         setNewTaskStatus(value);
     }
 
-    const addSection = () => {
-        const newSection: Section = {
-            sectionTitle: `New Section ${sections.length + 1}`,
-            status: `new_section_${sections.length + 1}`
-        };
-        setSections([...sections, newSection]);
-    };
 
     return (
         <div className="flex min-h-screen w-full">
             <div className="w-full flex flex-col">
                 <Navbar />
                 <div className="px-6 py-4">
-                    <div className="w-full flex flex-grow gap-2 justify-start min-w-screen-lg min-h-[80vh] overflow-x-auto mx-auto my-4">
-                        {sections.map((section) => {
-                            const filteredTasks = tasks.filter((task) => task.status === section.status);
-                            return (
-                                <div key={section.sectionTitle} className="flex flex-col gap-3 mb-2">
-                                    <SectionTitle name={section.sectionTitle} amount={filteredTasks.length} />
-                                    <div className="flex flex-col gap-3 max-h-[68vh] overflow-y-auto pe-2">
-                                        {filteredTasks.map((task) => (
-                                            <TaskCard
-                                                key={task.id}
-                                                title={task.title}
-                                                description={task.description}
-                                                date={task.date}
-                                            />
-                                        ))}
-                                    </div>
-                                </div>
-                            )
-                        })}
+                    <div className="w-full flex flex-grow gap-4 justify-start mx-auto my-4">
                         <div className="flex flex-col gap-2">
-                            <Button variant="outline" onClick={addSection} className="w-48 flex flex-row items-center justify-center top-0 text-center shadow bg-neutral-200 gap-1 p-3 hover:bg-neutral-200 hover:opacity-80">
+                            <Button variant="outline" onClick={() => setOpenSectionDialog(true)} className="w-48 flex flex-row items-center justify-center top-0 text-center shadow bg-neutral-200 gap-1 p-3 hover:bg-neutral-200 hover:opacity-80">
                                 <Plus size={16} className="text-gray-500 font-bold" />
                                 <div className="text-[10px] text-gray-500 font-bold">Create New Section</div>
                             </Button>
-                            <Button
-                                variant="outline"
-                                className="w-48 flex flex-row items-center justify-center text-center bg-neutral-200 gap-1 hover:bg-neutral-200 hover:opacity-80"
-                                onClick={() => setOpen(true)}
-                            >
-                                <Plus size={16} className="text-gray-500 font-bold" />
-                                <div className="text-[10px] text-gray-500 font-bold">Create New Card</div>
-                            </Button>
-                            <Dialog open={open} onOpenChange={setOpen}>
+                            <Dialog open={openSectionDialog} onOpenChange={setOpenSectionDialog}>
                                 <DialogTrigger asChild>
                                 </DialogTrigger>
                                 <DialogContent className="sm:max-w-[425px]">
                                     <DialogHeader>
-                                    <DialogTitle>New Task</DialogTitle>
+                                    <DialogTitle>New Section</DialogTitle>
                                     <DialogDescription>
                                     </DialogDescription>
                                     </DialogHeader>
@@ -183,6 +163,41 @@ const Index = () => {
                                             <Input
                                                 id="name"
                                                 className="col-span-3"
+                                                onChange={(e) => setNewTaskName(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+                                    <DialogFooter className="flex items-start">
+                                        <Button className="bg-violet-500" type="submit" onClick={addSection} >Submit</Button>
+                                    </DialogFooter>
+                                </DialogContent>
+                            </Dialog>
+                            <Button
+                                variant="outline"
+                                className="w-48 flex flex-row items-center justify-center text-center bg-neutral-200 gap-1 hover:bg-neutral-200 hover:opacity-80"
+                                onClick={() => setOpenCardDialog(true)}
+                            >
+                                <Plus size={16} className="text-gray-500 font-bold" />
+                                <div className="text-[10px] text-gray-500 font-bold">Create New Card</div>
+                            </Button>
+                            <Dialog open={openCardDialog} onOpenChange={setOpenCardDialog}>
+                                <DialogTrigger asChild>
+                                </DialogTrigger>
+                                <DialogContent className="sm:max-w-[425px]">
+                                    <DialogHeader>
+                                    <DialogTitle>New Task</DialogTitle>
+                                    <DialogDescription>
+                                    </DialogDescription>
+                                    </DialogHeader>
+                                    <div className="grid gap-4 py-4 justify-end">
+                                        <div className="grid grid-cols-4 items-center gap-4">
+                                            <Label htmlFor="name" className="text-left">
+                                                Name/Title
+                                            </Label>
+                                            <Input
+                                                id="name"
+                                                className="w-full col-span-3"
+                                                onChange={(e) => setNewTaskName(e.target.value)}
                                             />
                                         </div>
                                         <div className="grid grid-cols-4 items-center gap-4">
@@ -192,6 +207,7 @@ const Index = () => {
                                             <Textarea
                                                 id="description"
                                                 className="col-span-3"
+                                                onChange={(e) => setNewTaskDescription(e.target.value)}
                                             />
                                         </div>
                                         <div className="grid grid-cols-4 items-center gap-4">
@@ -241,12 +257,31 @@ const Index = () => {
                                         </div>
                                     </div>
                                     <DialogFooter className="flex items-start">
-                                        <Button type="submit" onClick={addTask} >Submit</Button>
+                                        <Button className="bg-violet-500" type="submit" onClick={addTask} >Submit</Button>
                                     </DialogFooter>
                                 </DialogContent>
                             </Dialog>
                         </div>
-
+                        <div className="flex flex-grow gap-4 px-2 min-w-screen-lg min-h-[80vh] overflow-x-auto">
+                            {sections.map((section) => {
+                                const filteredTasks = tasks.filter((task) => task.status === section.status);
+                                return (
+                                    <div key={section.sectionTitle} className="flex flex-col gap-3 mb-2">
+                                        <SectionTitle name={section.sectionTitle} amount={filteredTasks.length} />
+                                        <div className="flex flex-col gap-3 max-h-[68vh] overflow-y-auto pe-2">
+                                            {filteredTasks.map((task) => (
+                                                <TaskCard
+                                                    key={task.id}
+                                                    title={task.title}
+                                                    description={task.description}
+                                                    date={task.date}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
 
                 </div>
