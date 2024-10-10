@@ -1,5 +1,3 @@
-"use client";
-
 import {
   ColumnDef,
   Row,
@@ -100,9 +98,9 @@ export function DataTable<TData, TValue>({
           Table: TableComponent,
           TableRow: TableRowComponent(rows),
         }}
+        overscan={10}
         fixedHeaderContent={() =>
           table.getHeaderGroups().map((headerGroup) => (
-            // Change header background color to non-transparent
             <TableRow className="bg-neutral-100 text-black" key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (

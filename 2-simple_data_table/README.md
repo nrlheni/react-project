@@ -4,7 +4,8 @@ This project is a React TypeScript application that loads and displays around 10
 - **Shadcn UI**
 - **Tailwind CSS**
 - **TanStack Table**
-- **React Virtualize**
+- **TanStack Query**
+- **React Virtualize (react-virtuoso)**
 
 ## Demo
 
@@ -22,7 +23,7 @@ To run the project locally, follow these steps:
 
 ## Customizing Data
 
-To customize the data or add more, simply place or modify data files in the `/src/data` folder.
+To customize the data or add more, simply place or modify data files in the `/public/data` folder.
 
 The fields for each user data entry are: id, name, email, gender, address
 
